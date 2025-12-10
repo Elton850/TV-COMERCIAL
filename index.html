@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Modelo de Gestão Benel</title>
+
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+}
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: none;
+}
+iframe.active {
+    display: block;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container" id="container"></div>
+
+<script>
+const ROTATE_INTERVAL = 35000;
+const PAGE_REFRESH = 70000;
+
+let pages = [    
+  "https://app.powerbi.com/view?r=eyJrIjoiYjZlNGZjZDgtZTczNS00ZmVjLWJlYzItYzE4NTA3OWNlNmI2IiwidCI6IjNhMmVjOThiLTNiYzAtNGM4My1iNWUxLWY3YzQ2MTNjYzEyZCJ9",
+  "https://app.powerbi.com/view?r=eyJrIjoiODgzYmQyYmUtZDc5Yi00MmVmLWE0NDQtMzczMTEzZGM2Mzg0IiwidCI6IjNhMmVjOThiLTNiYzAtNGM4My1iNWUxLWY3YzQ2MTNjYzEyZCJ9"
+];
+
+let container = document.getElementById("container");
+let iframes = [];
+let index = 0;
+
+pages.forEach(url => {
+    let frame = document.createElement("iframe");
+    frame.src = url;
+    frame.loading = "lazy";
+    frame.allowFullscreen = true;
+    frame.allow = "fullscreen";
+    container.appendChild(frame);
+    iframes.push(frame);
+});
+
+function rotate() {
+    iframes.forEach(f => f.classList.remove("active"));
+    iframes[index].classList.add("active");
+    index = (index + 1) % iframes.length;
+}
+
+rotate();
+setInterval(rotate, ROTATE_INTERVAL);
+
+setTimeout(() => {
+    location.reload();
+}, PAGE_REFRESH);
+</script>
+
+</body>
+</html>
